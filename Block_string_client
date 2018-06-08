@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+#
+# -*- coding:utf-8 -*-
+# File: sync_socket_client.py
+#
+from socket import *
+from sys import*
+HOST = '192.168.132.9'
+PORT = 6666
+BUFSIZE = 1024
+ADDR = (HOST, PORT)
+
+tcpCliSock = socket(AF_INET, SOCK_STREAM)#定义socket类型，网络通信，TCP ,socket.SOCK_STREAM，流式socket , for TCP
+tcpCliSock.connect(ADDR)  #要连接的IP与端口
+
+
+while True:
+    data = raw_input('please input work: ')
+    tcpCliSock.send(data.encode('utf8')) #将输入的字符发送给服务端
+    rdata = tcpCliSock.recv(BUFSIZE) #把接收的数据定义为变量，并输出
+    if not rdata:
+       break
+    print(rdata.decode('utf8'))
+    if data == 'bye' or data == 'shutdown':
+        break
+tcpCliSock.close()
